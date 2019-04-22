@@ -1,4 +1,4 @@
-var interaval = 5000
+var interval = 5000
 var startButton = document.querySelector('#start')
 var timer = null
 var dropDown = document.querySelector('#dropDown')
@@ -15,9 +15,9 @@ function start() {
     startButton.value = '중지'
     dropDown.disabled = true
     timer = setInterval(function(){
-        interaval -= 1000
-        if(interaval == 0) {
-            interaval = 5000
+        interval -= 1000
+        if(interval == 0) {
+            interval = 5000
             excuteMacro()
         }
         showTimer()
@@ -27,7 +27,7 @@ function start() {
 function stop() {
     startButton.value = '시작'
     dropDown.disabled = false
-    interaval = 5000
+    interval = 5000
     hideTimer()
     clearInterval(timer)
     timer = null
@@ -35,12 +35,12 @@ function stop() {
 
 function showTimer(interval) {
     document.querySelector('#time').style.visibility = 'visible'
-    document.querySelector('#time').innerText = interaval / 1000
+    document.querySelector('#time').innerText = interval / 1000
 }
 
 function hideTimer() {
     document.querySelector('#time').style.visibility = 'hidden'
-    document.querySelector('#time').innerText = interaval / 1000
+    document.querySelector('#time').innerText = interval / 1000
 }
 
 startButton.addEventListener('click', function(){
