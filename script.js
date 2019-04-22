@@ -1,9 +1,8 @@
 var interaval = 5000
 var startButton = document.querySelector('#start')
 var timer = null
-
+var dropDown = document.querySelector('#dropDown')
 function excuteMacro() {
-    var dropDown = document.querySelector('#dropDown')
     var selectedItem = dropDown.options[dropDown.selectedIndex].text
     chrome.tabs.executeScript({
         code: 'var selectedItem = "'+selectedItem+'";'
@@ -12,10 +11,9 @@ function excuteMacro() {
     });
 }
 
-function startTimer() {
+function start() {
     startButton.value = '중지'
-    timer = 1
-    
+    dropDown.disabled = true
     timer = setInterval(function(){
         interaval -= 1000
         if(interaval == 0) {
@@ -26,8 +24,9 @@ function startTimer() {
     },1000)
 }
 
-function stopTimer() {
+function stop() {
     startButton.value = '시작'
+    dropDown.disabled = false
     interaval = 5000
     hideTimer()
     clearInterval(timer)
@@ -46,9 +45,9 @@ function hideTimer() {
 
 startButton.addEventListener('click', function(){
     if(timer != null) {
-        stopTimer()
+        stop()
     } else {
-        startTimer()
+        start()
     }
 })
 
