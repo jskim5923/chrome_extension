@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <meta charset="utf-8">
+  <head>
+     <style>
+            body{
+              width:400px;
+              padding:1rem;
+            }
+
+          </style>
+  </head>
+  <body>
+    <h1>HelpDesign Macro</h1>
+    <!--dropDown menu -->
+    <select name='fruits' id = 'dropDown'>
+            <option value='1' selected>전단지</option>
+            <option value='2'>배너</option>
+            <option value='3'>현수막</option>
+            <option value='4'>자켓봉투</option>
+            <option value='5'>티켓봉투</option>
+            <option value='6'>소봉투</option>
+            <option value='7'>스티커</option>
+    </select>
+    
+    <!--start or stop button-->
+    <input type="button" id='start' value="시작">
+
+    <!--display remain timer when macro started-->
+    <div id = time></div>
+
+    <!--execute javascript-->
+    <script src="script.js"></script>
+
+  </body>
+</html>
