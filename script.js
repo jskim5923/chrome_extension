@@ -1,37 +1,26 @@
 var interval = 5000
 var startButton = document.querySelector('#start')
-var timer = null
-var dropDown = document.querySelector('#dropDown')
-function excuteMacro() {
-    var selectedItem = dropDown.options[dropDown.selectedIndex].text
-    chrome.tabs.executeScript({
-        code: 'var selectedItem = "'+selectedItem+'";'
-    }, function() {
-        chrome.tabs.executeScript({file: 'script2.js'});
-    });
+var tabId = 0
+var checkBoxList = document.getElementsByName('checkProduct');
+var background = chrome.extension.getBackgroundPage()
+
+
+updateUI(background.enable,background.interval)
+
+function updateUI(state, interval) {
+    startButton.value = state? '중지' : '시작'
+    setCheckBox(state, background.checkedItem)
+    if(state) {
+        showTimer(interval)
+    } else {
+        hideTimer();
+    }
 }
 
-function start() {
-    startButton.value = '중지'
-    dropDown.disabled = true
-    timer = setInterval(function(){
-        interval -= 1000
-        if(interval == 0) {
-            interval = 5000
-            excuteMacro()
-        }
-        showTimer()
-    },1000)
-}
 
-function stop() {
-    startButton.value = '시작'
-    dropDown.disabled = false
-    interval = 5000
-    hideTimer()
-    clearInterval(timer)
-    timer = null
-}
+chrome.runtime.onMessage.addListener(function handleMessage(request, sender, sendResponse) {
+    updateUI(request.state, request.interval)
+})
 
 function showTimer(interval) {
     document.querySelector('#time').style.visibility = 'visible'
@@ -43,12 +32,45 @@ function hideTimer() {
     document.querySelector('#time').innerText = interval / 1000
 }
 
-startButton.addEventListener('click', function(){
-    if(timer != null) {
-        stop()
-    } else {
-        start()
+function setCheckBox(enable, checkedItem) {
+    for(var i = 0; i < checkBoxList.length; i++) {
+        checkBoxList[i].disabled = enable
     }
+
+    var checkArray = checkBoxList.values;
+    for(var i =0; i < checkedItem.length; i++) {
+        document.getElementById(checkedItem[i]).checked = true
+    }
+}
+
+startButton.addEventListener('click', function(){
+    chrome.tabs.query({active: true}, function(tabs){
+        tabId = tabs[0].id
+        var enable = false
+        var checkedItem = []
+        for(var i = 0; i < checkBoxList.length; i++) {
+            if(checkBoxList[i].checked) {
+                checkedItem.push(checkBoxList[i].id)
+            }
+        }
+
+        if(startButton.value == '시작') {
+            if(checkedItem.length == 0) {
+                alert('상품을 체크하세요')
+                return
+            }
+            startButton.value = '중지'
+            enable = true
+
+        } else {
+            startButton.value = '시작'
+            enable = false
+        }
+        setCheckBox(enable,checkedItem)
+        chrome.runtime.sendMessage({
+            tabId: tabs[0].id,
+            enable: enable,
+            checkedItem : checkedItem
+        })
+    })
 })
-
-
