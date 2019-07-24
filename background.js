@@ -3,12 +3,16 @@ var interval = 5000
 var enable = false
 var tabId = 0
 var checkedItem = []
+var settingInterval = 0
 chrome.runtime.onMessage.addListener(function handleMessage(request, sender, sendResponse) {
     tabId = request.tabId
     enable = request.enable
     selectedItem = request.selectedItem
     selectedIndex = request.selectedIndex
     checkedItem = request.checkedItem
+    console.log(request.test)
+    settingInterval = request.interval * 1000
+    interval = settingInterval
 
     if(enable) {
         start()
@@ -33,7 +37,7 @@ function initVariables(isTabClose) {
     }
     clearInterval(timer)
     timer = null
-    interval = 5000
+    interval = settingInterval
     enable = false
     tabId = 0
 }
@@ -50,7 +54,7 @@ function start() {
         })
         interval -= 1000
         if(interval == 0) {
-            interval = 5000
+            interval = settingInterval
             excuteMacro()
         }
     },1000)

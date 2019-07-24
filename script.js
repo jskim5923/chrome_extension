@@ -1,4 +1,4 @@
-var interval = 5000
+var intervalText = document.querySelector('#interval')
 var startButton = document.querySelector('#start')
 var tabId = 0
 var checkBoxList = document.getElementsByName('checkProduct');
@@ -43,11 +43,17 @@ function setCheckBox(enable, checkedItem) {
     }
 }
 
+function setIntervalText(enable) {
+    intervalText.disabled = enable
+}
+
 startButton.addEventListener('click', function(){
     chrome.tabs.query({active: true}, function(tabs){
         tabId = tabs[0].id
         var enable = false
         var checkedItem = []
+        var interval = document.getElementById('interval').value
+        console.log("interval: " + interval)
         for(var i = 0; i < checkBoxList.length; i++) {
             if(checkBoxList[i].checked) {
                 checkedItem.push(checkBoxList[i].id)
@@ -67,10 +73,12 @@ startButton.addEventListener('click', function(){
             enable = false
         }
         setCheckBox(enable,checkedItem)
+        setIntervalText(enable)
         chrome.runtime.sendMessage({
             tabId: tabs[0].id,
             enable: enable,
-            checkedItem : checkedItem
+            checkedItem : checkedItem,
+            interval: interval
         })
     })
 })
