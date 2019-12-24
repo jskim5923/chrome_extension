@@ -1,4 +1,4 @@
-history.go(0)
+window.location.assign('https://www.bizhows.com/help_design/listing.jsp')
 
 console.log(Date())
 var productIndex = 2
