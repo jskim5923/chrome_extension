@@ -53,6 +53,7 @@ startButton.addEventListener('click', function(){
         var enable = false
         var checkedItem = []
         var interval = document.getElementById('interval').value
+        var mobileNumber = document.getElementById('mobile_number').value
         console.log("interval: " + interval)
         for(var i = 0; i < checkBoxList.length; i++) {
             if(checkBoxList[i].checked) {
@@ -78,6 +79,7 @@ startButton.addEventListener('click', function(){
             tabId: tabs[0].id,
             enable: enable,
             checkedItem : checkedItem,
+            mobileNumber: mobileNumber,
             interval: interval
         })
     })

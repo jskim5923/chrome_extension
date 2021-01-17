@@ -10,6 +10,7 @@ chrome.runtime.onMessage.addListener(function handleMessage(request, sender, sen
     selectedItem = request.selectedItem
     selectedIndex = request.selectedIndex
     checkedItem = request.checkedItem
+    searchNumber = request.mobileNumber
     console.log(request.test)
     settingInterval = request.interval * 1000
     interval = settingInterval
@@ -70,7 +71,7 @@ function stop(isTabClose) {
 
 function excuteMacro() {
     chrome.tabs.executeScript(tabId,{
-        code: 'var checkedItem = "'+checkedItem+'";'
+        code: 'var checkedItem = "'+checkedItem+'"; var searchNumber = "'+searchNumber+'";'
     }, function() {
         chrome.tabs.executeScript(tabId,{file: 'script2.js'});
     });
